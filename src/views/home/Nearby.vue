@@ -20,36 +20,40 @@
     />
   </div>
   <div class="nearby">
-    <div class="nearby_list"
-    v-for="item in nearbyList"
-    :key="item.text">
+    <div class="nearby_list" v-for="item in nearbyList" :key="item.text">
       <img
         :src="`http://www.dell-lee.com/imgs/vue3/${item.urlName}.png`"
         alt=""
         class="nearby_list_img"
       />
-      <div class="nearby_list_tag">{{item.text}}</div>
+      <div class="nearby_list_tag">{{ item.text }}</div>
     </div>
   </div>
   <div class="gay"></div>
 </template>
 <script>
-
+// 列表数据处理
+const useNearbyListEffect = () => {
+  const nearbyList = [
+    { text: "超市便利", urlName: "超市" },
+    { text: "菜市场", urlName: "菜市场" },
+    { text: "水果店", urlName: "水果店" },
+    { text: "鲜花绿植", urlName: "鲜花" },
+    { text: "医药健康", urlName: "医药健康" },
+    { text: "家居时尚", urlName: "家居" },
+    { text: "烘培蛋糕", urlName: "蛋糕" },
+    { text: "签到", urlName: "签到" },
+    { text: "大牌免运", urlName: "大牌免运" },
+    { text: "红包套餐", urlName: "红包" },
+  ];
+  return {
+    nearbyList,
+  };
+};
 export default {
   name: "Nearby",
   setup() {
-      const nearbyList = [
-  { text: "超市便利", urlName: "超市" },
-  { text: "菜市场", urlName: "菜市场" },
-  { text: "水果店", urlName: "水果店" },
-  { text: "鲜花绿植", urlName: "鲜花" },
-  { text: "医药健康", urlName: "医药健康" },
-  { text: "家居时尚", urlName: "家居" },
-  { text: "烘培蛋糕", urlName: "蛋糕" },
-  { text: "签到", urlName: "签到" },
-  { text: "大牌免运", urlName: "大牌免运" },
-  { text: "红包套餐", urlName: "红包" },
-];
+    const { nearbyList } = useNearbyListEffect();
     return {
       nearbyList,
     };
@@ -123,7 +127,7 @@ export default {
   }
 }
 .gay {
-  margin-top: 0.16rem;
+  margin: 0.16rem -0.18rem 0 -0.18rem;
   height: 0.1rem;
   background-color: #f1f1f1;
 }
