@@ -7,19 +7,21 @@
     />
     <div class="wapper_input">
       <input
+        v-model="username"
         type="text"
         class="wapper_input_username"
-        placeholder="请输入手机号"
+        placeholder="请输入用户名"
       />
     </div>
     <div class="wapper_input">
       <input
-        type="text"
+        v-model="password"
+        type="password"
         class="wapper_input_passworld"
         placeholder="请输入密码"
       />
     </div>
-    <div class="wapper_button">登录</div>
+    <div class="wapper_button" @click="handleLogin">登录</div>
     <div class="wapper_login">
       <span class="wapper_login_register" @click="handleToRegister"
         >立即注册</span
@@ -30,17 +32,57 @@
   </div>
 </template>
 <script>
+import { reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { post } from "../../utils/requsets";
+// 点击注册相关逻辑
+const useToRegisterEffect = () => {
+  const router = useRouter();
+  const handleToRegister = () => {
+    router.push({ path: "./Register" });
+  };
+  return {
+    handleToRegister,
+  };
+};
+// 点击登录相关逻辑
+const userLoginEffect = () => {
+  const router = useRouter();
+  const data = reactive({
+    username: "",
+    password: "",
+  });
+  const handleLogin = async () => {
+    const result = await post("/api/user/Login", {
+      username: data.username,
+      password: data.password,
+    });
+    console.log(result);
+    if (result.errno === 0) {
+      localStorage.isLogin = "true";
+      router.push({ path: "/" });
+    } else {
+      alert("登录失败");
+    }
+  };
+  return {
+    handleLogin,
+    data,
+  };
+};
 export default {
   name: "Login",
   setup() {
-    const router = useRouter();
-    const handleToRegister=()=>{
-      router.push({path:'./Register'})
-    }
-    return{
-      handleToRegister
-    }
+    const { handleLogin, data } = userLoginEffect();
+    const { handleToRegister } = useToRegisterEffect();
+    const { username, password } = toRefs(data);
+
+    return {
+      handleLogin,
+      handleToRegister,
+      username,
+      password,
+    };
   },
 };
 </script>

@@ -1,38 +1,36 @@
 <template>
   <div class="shopList">
     <p class="shopList_title">附近店铺</p>
-    <div class="shopList_item" v-for="item in data" :key="item.id">
-      <img :src="item.imgUrl" alt="" class="shopList_item_img" />
-      <div class="shopList_item_content">
-        <p class="shopList_item_name">{{ item.name }}</p>
-        <span class="shopList_item_sales">月售{{ item.sales }}</span>
-        <span class="shopList_item_expressPrice"
-          >起送￥:{{ item.expressPrice }}</span
-        >
-        <span class="shopList_item_expressLimit"
-          >基础运费¥：{{ item.expressLimit }}</span
-        >
-        <p class="shopList_item_slogan">{{ item.slogan }}</p>
-      </div>
-    </div>
+    <router-link v-for="item in data" :key="item._id" :to="`/Shop/${item._id}`">
+      <ShopInfo :item="item" />
+    </router-link>
   </div>
 </template>
 <script>
+import ShopInfo from "../../components/ShopInfo";
 import { ref } from "vue";
 import { get } from "../../utils/requsets";
+// 获取商铺列表相关逻辑
+const useGetSHopListEffect = () => {
+  const data = ref([]);
+  const getShopList = async () => {
+    const result = await get("/api/shop/hot-list");
+    if (result.errno == 0 && result.data.length) {
+      data.value = result.data;
+    }
+  };
+  return {
+    getShopList,
+    data,
+  };
+};
 export default {
   name: "ShopList",
+  components: {
+    ShopInfo,
+  },
   setup() {
-    const data = ref([]);
-
-    const getShopList = async () => {
-      const result = await get(
-        "/api/shop/hot-list"
-      );
-      if (result.errno == 0 && result.data.length) {
-        data.value = result.data;
-      }
-    };
+    const { data, getShopList } = useGetSHopListEffect();
     getShopList();
     return {
       data,
