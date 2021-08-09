@@ -14,6 +14,7 @@
     <ShopInfo :item="item" />
   </div>
   <Content/>
+  <Cart/>
 </template>
 <script>
 import Content from './Content'
@@ -21,6 +22,7 @@ import ShopInfo from "../../components/ShopInfo";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, toRefs } from "@vue/reactivity";
 import { get } from "../../utils/requsets";
+import Cart from './Cart'
 // 返回相关逻辑
 const useBack = () => {
   const router = useRouter();
@@ -52,7 +54,7 @@ export default {
   name: "Shop",
   components: {
     ShopInfo,
-    Content
+    Content,Cart
   },
   setup() {
     const { handleToBack } = useBack();
